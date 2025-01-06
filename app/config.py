@@ -5,6 +5,7 @@ import os
 from functools import lru_cache
 load_dotenv()
 
+os.environ['CQLENG_ALLOW_SCHEMA_MANAGEMENT'] = "1"
 
 class Settings(BaseSettings):
     keyspace: str = Field(..., validation_alias="ASTRADB_KEYSPACE")
