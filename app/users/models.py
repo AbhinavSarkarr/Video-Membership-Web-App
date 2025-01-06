@@ -3,6 +3,7 @@ from cassandra.cqlengine.models import Model
 import uuid
 from app.config import get_settings
 from app.users import validators
+from app.users import security
 
 
 settings = get_settings()
@@ -22,6 +23,13 @@ class User(Model):
     def __repr__(self):
         return f"User(email={self.email}, user_id={self.user_id})"
     
+    def set_password(self, pw, commit=False):
+        pw_hash = security.generate_hash(pw)
+        self.password = pw_hash
+        if commit:
+            self.save()
+        return True
+
     @staticmethod
     def create_user(email, password=None):
         q = User.objects.filter(email=email)
@@ -31,6 +39,7 @@ class User(Model):
         if not valid:
             raise Exception(f"Invalid Email: {msg}") 
         obj = User(email=email)
-        obj.password = password
+        obj.set_password(password)
+        # obj.password = password
         obj.save()
         return obj
