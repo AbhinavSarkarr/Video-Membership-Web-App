@@ -23,3 +23,9 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/")
 async def homepage():
     return {"Hello":"World", "keyspace":settings.keyspace, "id":settings.client_id, "secret":settings.client_secret}
+
+@app.get("/users")
+async def list_users():
+    users = User.objects.all().limit(10)
+    return list(users)
+

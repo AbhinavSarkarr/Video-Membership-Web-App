@@ -1,3 +1,4 @@
 app/unencrypted/    
 app/.env
 venv
+*.pyc
