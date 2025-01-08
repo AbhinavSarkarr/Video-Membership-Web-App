@@ -12,7 +12,8 @@ class Settings(BaseSettings):
     client_id: str = Field(..., validation_alias="CLIENT_ID")
     client_secret: str = Field(..., validation_alias="CLIENT_SECRET")
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", extra='allow')
+    
 
 
 @lru_cache

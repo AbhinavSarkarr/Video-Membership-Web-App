@@ -36,7 +36,7 @@ class User(Model):
 
     @staticmethod
     def create_user(email, password=None):
-        q = User.objects.filter(email=email)
+        q = User.objects.filter(email=email).count()
         if q != 0:
             raise Exception("This Email is already registered")
         valid, msg, email = validators._validate_email(email)
