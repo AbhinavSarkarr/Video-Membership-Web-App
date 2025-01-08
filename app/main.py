@@ -1,8 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from . import config, db
 from cassandra.cqlengine.management import sync_table
 from app.users.models import User
 from contextlib import asynccontextmanager
+import pathlib
+from fastapi.templating import Jinja2Templates
+
+BASE_DIR = pathlib.Path(__file__).resolve().parent
+TEMPLATE_DIR = BASE_DIR / "templates"
 
 DB_SESSION = None
 
@@ -19,6 +25,7 @@ async def lifespan(app: FastAPI):
     # Code to run on shutdown
 
 app = FastAPI(lifespan=lifespan)
+templates = Jinja2Templates(directory=str(TEMPLATE_DIR))
 
 @app.get("/")
 async def homepage():
