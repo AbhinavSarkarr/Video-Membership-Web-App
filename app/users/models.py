@@ -16,7 +16,6 @@ class User(Model):
     user_id: columns.UUID = columns.UUID(primary_key=True, default=uuid.uuid1)
     password: columns.Text = columns.Text()
 
-
     def __str__(self):
         return self.__repr__()
 
@@ -29,6 +28,11 @@ class User(Model):
         if commit:
             self.save()
         return True
+    
+    def verify_password(self, pw_str):
+        pw_hash = self.password
+        verified, _  = security.verify_hash(pw_hash=pw_hash, pw_raw=pw_str)
+        return verified 
 
     @staticmethod
     def create_user(email, password=None):
